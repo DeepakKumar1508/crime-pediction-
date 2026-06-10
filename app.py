@@ -1,6 +1,12 @@
+```python
 from flask import Flask, request
+import pickle
+import numpy as np
 
 app = Flask(__name__)
+
+# Load trained model
+model = pickle.load(open("model.pkl", "rb"))
 
 @app.route("/")
 def home():
@@ -8,26 +14,52 @@ def home():
     <h1>Crime Count Prediction</h1>
 
     <form action="/predict" method="get">
-        <input type="number" name="primary_type" placeholder="Primary Type"><br><br>
-        <input type="number" name="district" placeholder="District"><br><br>
-        <input type="number" name="ward" placeholder="Ward"><br><br>
-        <input type="number" name="community" placeholder="Community Area"><br><br>
-        <input type="number" name="day" placeholder="Day"><br><br>
-        <input type="number" name="month" placeholder="Month"><br><br>
-        <input type="number" name="year" placeholder="Year"><br><br>
+
+        <input type="number" name="population"
+        placeholder="Population" required><br><br>
+
+        <input type="number" name="unemployment"
+        placeholder="Unemployment Rate" required><br><br>
+
+        <input type="number" name="poverty"
+        placeholder="Poverty Rate" required><br><br>
 
         <button type="submit">Predict</button>
+
     </form>
     """
 
 @app.route("/predict")
 def predict():
-    prediction = 13
 
-    return f"""
-    <h2>Predicted Count: {prediction}</h2>
-    <a href="/">Back</a>
-    """
+    try:
+        population = float(request.args.get("population"))
+        unemployment = float(request.args.get("unemployment"))
+        poverty = float(request.args.get("poverty"))
 
-# Required for Vercel
-app = app
+        features = np.array([
+            [population, unemployment, poverty]
+        ])
+
+        prediction = model.predict(features)[0]
+
+        risk = "High Crime Area" if prediction == 1 else "Low Crime Area"
+
+        return f"""
+        <h1>Prediction Result</h1>
+
+        <h2>Crime Prediction: {prediction}</h2>
+
+        <h3>{risk}</h3>
+
+        <br>
+
+        <a href="/">Back</a>
+        """
+
+    except Exception as e:
+        return f"Error: {e}"
+
+if __name__ == "__main__":
+    app.run(debug=True)
+```
