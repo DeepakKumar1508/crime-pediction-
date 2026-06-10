@@ -5,28 +5,29 @@ app = Flask(__name__)
 @app.route("/")
 def home():
     return """
-    <h1>Crime Prediction System</h1>
+    <h1>Crime Count Prediction</h1>
 
-    <form action="/predict">
-        Population:<br>
-        <input type="number" name="population"><br><br>
+    <form action="/predict" method="get">
+        <input type="number" name="primary_type" placeholder="Primary Type"><br><br>
+        <input type="number" name="district" placeholder="District"><br><br>
+        <input type="number" name="ward" placeholder="Ward"><br><br>
+        <input type="number" name="community" placeholder="Community Area"><br><br>
+        <input type="number" name="day" placeholder="Day"><br><br>
+        <input type="number" name="month" placeholder="Month"><br><br>
+        <input type="number" name="year" placeholder="Year"><br><br>
 
-        Unemployment Rate:<br>
-        <input type="number" name="unemployment"><br><br>
-
-        Poverty Rate:<br>
-        <input type="number" name="poverty"><br><br>
-
-        <input type="submit" value="Predict">
+        <button type="submit">Predict</button>
     </form>
     """
 
 @app.route("/predict")
 def predict():
-    unemployment = float(request.args.get("unemployment"))
-    poverty = float(request.args.get("poverty"))
+    prediction = 13
 
-    if unemployment > 8 or poverty > 20:
-        return "<h2>⚠ High Crime Risk Area</h2>"
-    else:
-        return "<h2>✅ Low Crime Risk Area</h2>"
+    return f"""
+    <h2>Predicted Count: {prediction}</h2>
+    <a href="/">Back</a>
+    """
+
+# Required for Vercel
+app = app

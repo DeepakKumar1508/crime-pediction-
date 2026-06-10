@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Crime Count Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}">
+</head>
+<body>
+
+<h1>Crime Count Prediction</h1>
+
+<div class="container">
+
+    <div class="left">
+
+        <form action="/predict" method="post">
+
+            <label>Primary Type</label>
+            <input type="number" name="primary_type">
+
+            <label>District</label>
+            <input type="number" name="district">
+
+            <label>Ward</label>
+            <input type="number" name="ward">
+
+            <label>Community Area</label>
+            <input type="number" name="community">
+
+            <label>Day</label>
+            <input type="number" name="day">
+
+            <label>Month</label>
+            <input type="number" name="month">
+
+            <label>Year</label>
+            <input type="number" name="year">
+
+            <div class="buttons">
+                <button type="reset">Clear</button>
+                <button type="submit">Submit</button>
+            </div>
+
+        </form>
+
+    </div>
+
+    <div class="right">
+
+        <div class="result">
+            Predicted Count:
+            {{ prediction if prediction else "-" }}
+        </div>
+
+        <div class="flag">
+            Flag
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

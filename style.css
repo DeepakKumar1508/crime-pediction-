@@ -1,0 +1,67 @@
+body{
+    background:#07070d;
+    color:white;
+    font-family:Arial;
+    padding:20px;
+}
+
+h1{
+    text-align:center;
+}
+
+.container{
+    display:flex;
+    gap:20px;
+}
+
+.left{
+    width:50%;
+}
+
+.right{
+    width:50%;
+}
+
+label{
+    display:block;
+    margin-top:15px;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    background:#1f1f29;
+    border:1px solid #333;
+    color:white;
+}
+
+.result{
+    background:#23232d;
+    padding:20px;
+    margin-bottom:20px;
+}
+
+.flag{
+    background:#5e5e6e;
+    padding:12px;
+    text-align:center;
+    font-weight:bold;
+}
+
+.buttons{
+    margin-top:20px;
+    display:flex;
+    gap:10px;
+}
+
+button{
+    flex:1;
+    padding:12px;
+    border:none;
+    cursor:pointer;
+}
+
+button[type="submit"]{
+    background:#ff5a00;
+    color:white;
+}
