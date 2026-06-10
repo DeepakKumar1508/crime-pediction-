@@ -11,18 +11,24 @@ model = pickle.load(open("model.pkl", "rb"))
 @app.route("/")
 def home():
     return """
-    <h1>Crime Count Prediction</h1>
+    <h1>Crime Prediction System</h1>
 
     <form action="/predict" method="get">
 
-        <input type="number" name="population"
-        placeholder="Population" required><br><br>
+        <input type="number"
+               name="population"
+               placeholder="Population"
+               required><br><br>
 
-        <input type="number" name="unemployment"
-        placeholder="Unemployment Rate" required><br><br>
+        <input type="number"
+               name="unemployment"
+               placeholder="Unemployment Rate"
+               required><br><br>
 
-        <input type="number" name="poverty"
-        placeholder="Poverty Rate" required><br><br>
+        <input type="number"
+               name="poverty"
+               placeholder="Poverty Rate"
+               required><br><br>
 
         <button type="submit">Predict</button>
 
@@ -32,34 +38,41 @@ def home():
 @app.route("/predict")
 def predict():
 
-    try:
-        population = float(request.args.get("population"))
-        unemployment = float(request.args.get("unemployment"))
-        poverty = float(request.args.get("poverty"))
+    population = float(request.args.get("population"))
+    unemployment = float(request.args.get("unemployment"))
+    poverty = float(request.args.get("poverty"))
 
-        features = np.array([
-            [population, unemployment, poverty]
-        ])
+    features = np.array([[population,
+                          unemployment,
+                          poverty]])
 
-        prediction = model.predict(features)[0]
+    prediction = int(model.predict(features)[0])
 
-        risk = "High Crime Area" if prediction == 1 else "Low Crime Area"
+    if prediction == 1:
+        status = "High Crime Risk Area"
+    else:
+        status = "Low Crime Risk Area"
 
-        return f"""
-        <h1>Prediction Result</h1>
+    return f"""
+    <html>
+    <body style='font-family:Arial;padding:40px;'>
 
-        <h2>Crime Prediction: {prediction}</h2>
+    <h1>Prediction Result</h1>
 
-        <h3>{risk}</h3>
+    <h2>{status}</h2>
 
-        <br>
+    <p><b>Population:</b> {population}</p>
+    <p><b>Unemployment Rate:</b> {unemployment}%</p>
+    <p><b>Poverty Rate:</b> {poverty}%</p>
 
-        <a href="/">Back</a>
-        """
+    <br>
 
-    except Exception as e:
-        return f"Error: {e}"
+    <a href="/">Back</a>
+
+    </body>
+    </html>
+    """
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
 ```
